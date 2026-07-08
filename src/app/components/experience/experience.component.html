@@ -1,0 +1,67 @@
+<section id="experience" class="py-20">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl mb-4">Work Experience</h2>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+        My professional journey and the impact I've made at each organization
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto">
+      <div class="relative">
+        <!-- Timeline line -->
+        <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-border transform md:-translate-x-0.5"></div>
+
+        <div class="space-y-12">
+          @for (experience of experiences; track experience.title; let i = $index) {
+            <div class="relative">
+              <!-- Timeline dot -->
+              <div class="absolute left-2 md:left-1/2 w-4 h-4 bg-primary rounded-full transform md:-translate-x-2 flex items-center justify-center">
+                <div class="w-2 h-2 bg-background rounded-full"></div>
+              </div>
+
+              <div
+                class="ml-12 md:ml-0 md:w-1/2"
+                [class.md:pr-8]="i % 2 === 0"
+                [class.md:ml-auto]="i % 2 !== 0"
+                [class.md:pl-8]="i % 2 !== 0"
+              >
+                <div appCard>
+                  <div appCardHeader>
+                    <div class="flex items-start justify-between mb-2">
+                      <div>
+                        <h3 appCardTitle class="text-lg">{{ experience.title }}</h3>
+                        <p appCardDescription class="text-primary">{{ experience.company }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-muted-foreground">
+                      <div class="flex items-center gap-1">
+                        <svg lucideCalendar class="h-4 w-4"></svg>
+                        {{ experience.period }}
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <svg lucideMapPin class="h-4 w-4"></svg>
+                        {{ experience.location }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div appCardContent>
+                    <p class="text-muted-foreground mb-4">{{ experience.description }}</p>
+
+                    <div class="flex flex-wrap gap-2">
+                      @for (tech of experience.technologies; track tech) {
+                        <span appBadge variant="secondary" class="text-xs">{{ tech }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

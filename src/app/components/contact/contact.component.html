@@ -1,0 +1,127 @@
+<section id="contact" class="py-20 bg-muted/30">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl mb-4">Get In Touch</h2>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+        Let's discuss your next project or potential collaboration opportunities
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      <div>
+        <div appCard>
+          <div appCardHeader>
+            <h3 appCardTitle>Send me a message</h3>
+            <p appCardDescription>I'll get back to you within 24 hours</p>
+          </div>
+          <div appCardContent>
+            <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" novalidate class="space-y-4">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                  <label appLabel for="name">Name</label>
+                  <input
+                    appInput
+                    id="name"
+                    name="name"
+                    [(ngModel)]="formData.name"
+                    #nameField="ngModel"
+                    required
+                    [class.border-destructive]="nameField.invalid && contactForm.submitted"
+                  />
+                  @if (nameField.invalid && contactForm.submitted) {
+                    <p class="text-sm text-destructive">Name is required.</p>
+                  }
+                </div>
+                <div class="space-y-2">
+                  <label appLabel for="email">Email</label>
+                  <input
+                    appInput
+                    id="email"
+                    name="email"
+                    type="email"
+                    [(ngModel)]="formData.email"
+                    #emailField="ngModel"
+                    required
+                    email
+                    [class.border-destructive]="emailField.invalid && contactForm.submitted"
+                  />
+                  @if (emailField.invalid && contactForm.submitted) {
+                    <p class="text-sm text-destructive">
+                      {{ emailField.errors?.['required'] ? 'Email is required.' : 'Enter a valid email.' }}
+                    </p>
+                  }
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label appLabel for="subject">Subject</label>
+                <input
+                  appInput
+                  id="subject"
+                  name="subject"
+                  [(ngModel)]="formData.subject"
+                  #subjectField="ngModel"
+                  required
+                  [class.border-destructive]="subjectField.invalid && contactForm.submitted"
+                />
+                @if (subjectField.invalid && contactForm.submitted) {
+                  <p class="text-sm text-destructive">Subject is required.</p>
+                }
+              </div>
+
+              <div class="space-y-2">
+                <label appLabel for="message">Message</label>
+                <textarea
+                  appTextarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  [(ngModel)]="formData.message"
+                  #messageField="ngModel"
+                  required
+                  [class.border-destructive]="messageField.invalid && contactForm.submitted"
+                ></textarea>
+                @if (messageField.invalid && contactForm.submitted) {
+                  <p class="text-sm text-destructive">Message is required.</p>
+                }
+              </div>
+
+              <button appButton type="submit" class="w-full">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-2xl mb-6">Let's Connect</h3>
+          <p class="text-muted-foreground mb-8">
+            I'm always interested in hearing about new opportunities,
+            whether it's a freelance project, full-time position, or just
+            a chat about technology and innovation.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          @for (info of contactInfo; track info.label) {
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                <svg [lucideIcon]="info.icon" class="h-5 w-5 text-primary"></svg>
+              </div>
+              <div>
+                <p class="font-medium">{{ info.label }}</p>
+                @if (info.href === '#') {
+                  <p class="text-muted-foreground">{{ info.value }}</p>
+                } @else {
+                  <a [href]="info.href" class="text-muted-foreground hover:text-primary transition-colors">
+                    {{ info.value }}
+                  </a>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

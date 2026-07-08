@@ -1,0 +1,50 @@
+<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <h1 class="text-xl font-semibold">Kaylin Maharaj</h1>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <button (click)="scrollToSection('about')" class="hover:text-primary transition-colors">
+          About
+        </button>
+        <button (click)="scrollToSection('skills')" class="hover:text-primary transition-colors">
+          Skills
+        </button>
+        <button (click)="scrollToSection('projects')" class="hover:text-primary transition-colors">
+          Projects
+        </button>
+        <button (click)="scrollToSection('experience')" class="hover:text-primary transition-colors">
+          Experience
+        </button>
+        <button appButton size="sm" (click)="scrollToSection('contact')">Contact</button>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button appButton variant="ghost" size="sm" class="md:hidden" (click)="toggleMenu()">
+        <svg lucideMenu class="h-5 w-5"></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    @if (isMenuOpen()) {
+      <nav class="md:hidden mt-4 pb-4 border-t pt-4">
+        <div class="flex flex-col space-y-4">
+          <button (click)="scrollToSection('about')" class="text-left hover:text-primary transition-colors">
+            About
+          </button>
+          <button (click)="scrollToSection('skills')" class="text-left hover:text-primary transition-colors">
+            Skills
+          </button>
+          <button (click)="scrollToSection('projects')" class="text-left hover:text-primary transition-colors">
+            Projects
+          </button>
+          <button (click)="scrollToSection('experience')" class="text-left hover:text-primary transition-colors">
+            Experience
+          </button>
+          <button appButton size="sm" class="w-fit" (click)="scrollToSection('contact')">Contact</button>
+        </div>
+      </nav>
+    }
+  </div>
+</header>
