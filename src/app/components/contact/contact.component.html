@@ -86,7 +86,18 @@
                 }
               </div>
 
-              <button appButton type="submit" class="w-full">Send Message</button>
+              <button appButton type="submit" class="w-full" [disabled]="status() === 'sending'">
+                {{ status() === 'sending' ? 'Sending...' : 'Send Message' }}
+              </button>
+
+              @if (status() === 'success') {
+                <p class="text-sm text-primary text-center">Thanks - your message is on its way. I'll get back to you soon.</p>
+              }
+              @if (status() === 'error') {
+                <p class="text-sm text-destructive text-center">
+                  Something went wrong. Try again, or email me directly at {{ siteConfig.config().email }}.
+                </p>
+              }
             </form>
           </div>
         </div>
@@ -103,7 +114,7 @@
         </div>
 
         <div class="space-y-6">
-          @for (info of contactInfo; track info.label) {
+          @for (info of contactInfo(); track info.label) {
             <div class="flex items-center gap-4">
               <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                 <svg [lucideIcon]="info.icon" class="h-5 w-5 text-primary"></svg>

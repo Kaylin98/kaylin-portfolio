@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { LucideDynamicIcon, LucideMail, LucideMapPin, LucidePhone } from '@lucide/angular';
 import { CARD_DIRECTIVES } from '../../ui/card.directive';
 import { ButtonDirective } from '../../ui/button.directive';
 import { InputDirective, LabelDirective, TextareaDirective } from '../../ui/form-controls.directive';
+import { SiteConfigService } from '../../site-config';
 
 interface ContactInfo {
   icon: any;
@@ -12,6 +14,8 @@ interface ContactInfo {
   href: string;
 }
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xvzjjvpn';
+
 @Component({
   selector: 'app-contact',
   standalone: true,
@@ -19,26 +23,35 @@ interface ContactInfo {
   templateUrl: './contact.component.html',
 })
 export class ContactComponent {
-  formData = {
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  };
+  readonly siteConfig = inject(SiteConfigService);
+  private readonly http = inject(HttpClient);
 
-  readonly contactInfo: ContactInfo[] = [
-    { icon: LucideMail, label: 'Email', value: 'kaylinmaharaj@gmail.com', href: 'mailto:kaylinmaharaj@gmail.com' },
-    { icon: LucidePhone, label: 'Phone', value: '073 355 9325', href: 'tel:+27733559325' },
-    { icon: LucideMapPin, label: 'Location', value: 'Randburg, South Africa', href: '#' },
-  ];
+  formData = { name: '', email: '', subject: '', message: '' };
+
+  readonly status = signal<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  readonly contactInfo = computed<ContactInfo[]>(() => {
+    const c = this.siteConfig.config();
+    return [
+      { icon: LucideMail, label: 'Email', value: c.email, href: `mailto:${c.email}` },
+      { icon: LucidePhone, label: 'Phone', value: c.phone, href: this.siteConfig.phoneHref() },
+      { icon: LucideMapPin, label: 'Location', value: c.location, href: '#' },
+    ];
+  });
 
   onSubmit(form: NgForm): void {
-    if (form.invalid) {
-      return;
-    }
-    // Handle form submission here
-    console.log('Form submitted:', this.formData);
-    form.resetForm();
-    alert("Thank you for your message! I'll get back to you soon.");
+    if (form.invalid) return;
+
+    this.status.set('sending');
+
+    this.http.post(FORMSPREE_ENDPOINT, this.formData, { headers: { Accept: 'application/json' } }).subscribe({
+      next: () => {
+        this.status.set('success');
+        form.resetForm();
+      },
+      error: () => {
+        this.status.set('error');
+      },
+    });
   }
 }

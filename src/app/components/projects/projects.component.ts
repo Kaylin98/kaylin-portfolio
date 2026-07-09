@@ -26,7 +26,7 @@ export class ProjectsComponent {
     {
       title: 'Thrust Issues',
       description:
-        'A physics-based rocket flyer across three hazardous worlds — thrust with Space, rotate with the arrow keys, and fight momentum as much as gravity. Built with hybrid Rigidbody physics, a finite-state collision system, and procedural UI that adapts its style per level.',
+        'A physics-based rocket flyer across three hazardous worlds - thrust with Space, rotate with the arrow keys, and fight momentum as much as gravity. Built with hybrid Rigidbody physics, a finite-state collision system, and procedural UI that adapts its style per level.',
       image: 'images/thrust_issues.png',
       technologies: ['Unity', 'C#', 'Physics Simulation', 'Procedural UI'],
       githubUrl: 'https://github.com/Kaylin98/thrust-issues',
@@ -44,7 +44,7 @@ export class ProjectsComponent {
     {
       title: 'Trigger Happy',
       description:
-        'A high-speed FPS built for raw movement and reflexes — no filler, no lore, just tight gunplay in a low-poly arena. Built with multi-camera layering to keep the weapon view crisp and a C# controller tuned for immediate, lag-free web deployment.',
+        'A high-speed FPS built for raw movement and reflexes - no filler, no lore, just tight gunplay in a low-poly arena. Built with multi-camera layering to keep the weapon view crisp and a C# controller tuned for immediate, lag-free web deployment.',
       image: 'images/trigger_happy.png',
       technologies: ['Unity (URP)', 'C#', 'FPS Mechanics', 'Responsive Controls'],
       githubUrl: 'https://github.com/Kaylin98/Trigger-Happy',

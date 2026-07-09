@@ -62,7 +62,7 @@ export class ExperienceComponent {
       location: 'Durban',
       period: '12/2018 - 01/2019',
       description:
-        'Supported and updated existing programs at the market leader in integrated accounting, payroll, and payment systems — debugging and troubleshooting production issues while learning AngularJS on the job.',
+        'Supported and updated existing programs at the market leader in integrated accounting, payroll, and payment systems - debugging and troubleshooting production issues while learning AngularJS on the job.',
       technologies: ['AngularJS', 'Debugging'],
     },
   ];
