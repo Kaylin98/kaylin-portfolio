@@ -1,59 +1,98 @@
-# KaylinPortfolio
+# Kaylin Maharaj — Portfolio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.5.
+Personal portfolio site built with Angular and Tailwind CSS, showcasing full-stack
+software engineering work (.NET / C# / Angular) alongside game development
+projects built in Unity.
 
-## Development server
+**Live site:** [kaylin-maharaj.co.za](https://kaylin-maharaj.co.za)
 
-To start a local development server, run:
+## Tech Stack
+
+- **Framework:** Angular (standalone components, signals, new `@if`/`@for` control flow)
+- **Styling:** Tailwind CSS v4
+- **Icons:** [@lucide/angular](https://lucide.dev), with custom stroke-style components for brand icons (GitHub, LinkedIn) that Lucide no longer ships
+- **Forms:** Angular template-driven forms (`ngModel`), submitted via [Formspree](https://formspree.io)
+- **Hosting:** Cloudflare Workers (static assets), deployed via Wrangler
+- **CI/CD:** Automatic build & deploy on every push to `main`, via Cloudflare Workers Builds
+
+## Features
+
+- Fully componentized sections: Header, Hero, About, Skills, Projects, Experience, Contact, Footer
+- Custom Tailwind-based UI primitives (Button, Card, Badge, Input, Textarea, Label) implemented as lightweight Angular directives rather than a full component library
+- Dark theme with a custom lime/near-black color palette
+- Custom animated cursor (desktop only — automatically disabled on touch devices)
+- Centralized site configuration (`site-config.ts`) for contact info and social links — designed to be swapped for a real backend API later with no changes needed in consuming components
+- Contact form with inline validation and real email delivery via Formspree
+- Responsive layout, from mobile through desktop
+
+## Project Structure
+
+```
+src/app/
+├── ui/                     # Shared UI primitives (button, card, badge, form controls, brand icons, cursor dot)
+├── components/
+│   ├── header/
+│   ├── hero/
+│   ├── about/
+│   ├── skills/
+│   ├── projects/
+│   ├── experience/
+│   ├── contact/
+│   ├── footer/
+│   └── image-with-fallback/
+├── site-config.ts          # Centralized contact/social info (Injectable service)
+├── app.component.ts
+└── app.component.html
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js `v22.22.3`, `v24.15.0`, or later
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development server
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to `http://localhost:4200/`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Build
 
 ```bash
-ng generate component component-name
+npx ng build --output-path dist/cloudflare
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Output is written to `dist/cloudflare/browser`.
+
+## Deployment
+
+This project deploys to **Cloudflare Workers** (static assets) via Wrangler, configured in `wrangler.jsonc`. Every push to `main` automatically triggers a new build and deployment through Cloudflare's Git integration — no manual deploy steps or separate CI file required.
+
+To deploy manually:
 
 ```bash
-ng generate --help
+npx wrangler deploy
 ```
 
-## Building
+## Contact Form
 
-To build the project run:
+The contact form submits to a [Formspree](https://formspree.io) endpoint. Update `FORMSPREE_ENDPOINT` in `src/app/components/contact/contact.component.ts` if the form is ever moved to a new Formspree project.
 
-```bash
-ng build
-```
+## License
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Personal project — all rights reserved.
 
-## Running unit tests
+## Author
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Kaylin Maharaj**
+Full Stack Software Engineer | Randburg, South Africa
+[GitHub](https://github.com/Kaylin98)
