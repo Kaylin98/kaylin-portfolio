@@ -8,15 +8,31 @@
     </div>
 
     <div class="grid lg:grid-cols-3 gap-8">
-      @for (project of projects; track project.title) {
-        <div appCard class="overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(200,247,62,0.25)]">
+      @for (project of projects; track project.title; let i = $index) {
+        <div
+          appCard
+          class="overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(200,247,62,0.25)]"
+          (mouseenter)="onCardEnter(i)"
+          (mouseleave)="onCardLeave()"
+        >
           <div class="relative overflow-hidden">
-            <app-image-with-fallback
-              [src]="project.image"
-              [alt]="project.title"
-              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            @if (hoveredIndex() === i && project.videoSrc) {
+              <video
+                [src]="project.videoSrc"
+                autoplay
+                muted
+                loop
+                playsinline
+                class="w-full h-48 object-cover"
+              ></video>
+            } @else {
+              <app-image-with-fallback
+                [src]="project.image"
+                [alt]="project.title"
+                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            }
+            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </div>
 
           <div appCardHeader>
