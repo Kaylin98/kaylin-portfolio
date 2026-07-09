@@ -9,7 +9,7 @@
 
     <div class="grid lg:grid-cols-3 gap-8">
       @for (project of projects; track project.title) {
-        <div appCard class="overflow-hidden group hover:shadow-lg transition-all duration-300">
+        <div appCard class="overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(200,247,62,0.25)]">
           <div class="relative overflow-hidden">
             <app-image-with-fallback
               [src]="project.image"

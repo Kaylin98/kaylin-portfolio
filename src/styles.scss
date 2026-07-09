@@ -79,3 +79,9 @@
     cursor: none !important;
   }
 }
+
+@media (pointer: coarse) {
+  app-cursor-dot {
+    display: none;
+  }
+}
