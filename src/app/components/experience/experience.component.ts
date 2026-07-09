@@ -21,7 +21,7 @@ interface Experience {
 export class ExperienceComponent {
   readonly experiences: Experience[] = [
     {
-      title: 'Software Developer (Intermediate)',
+      title: 'Software Developer',
       company: 'iOCO',
       location: 'Midrand',
       period: '06/2024 - Present',

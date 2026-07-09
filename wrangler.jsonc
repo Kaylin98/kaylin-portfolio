@@ -1,0 +1,8 @@
+{
+  "name": "kaylin-portfolio",
+  "compatibility_date": "2026-07-09",
+  "assets": {
+    "directory": "./dist/cloudflare/browser",
+    "not_found_handling": "single-page-application"
+  }
+}
