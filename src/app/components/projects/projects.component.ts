@@ -122,6 +122,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.updateVisibleCount();
     window.addEventListener('resize', this.resizeListener);
+    document.addEventListener('visibilitychange', this.visibilityListener);
     this.motionQuery.addEventListener('change', this.motionListener);
     this.prefersReducedMotion.set(this.motionQuery.matches);
     this.restartAutoAdvance();
@@ -130,6 +131,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.resizeListener);
     this.motionQuery.removeEventListener('change', this.motionListener);
+    document.removeEventListener('visibilitychange', this.visibilityListener);
     this.clearAutoAdvance();
   }
 
@@ -169,16 +171,27 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onTrackTransitionEnd(): void {
+    this.normalizeTrackIndex();
+  }
+
+  private normalizeTrackIndex(): void {
     const n = this.projects.length;
     const i = this.trackIndex();
-    if (i >= CLONE_COUNT + n) {
+    const wrapped = CLONE_COUNT + (((i - CLONE_COUNT) % n) + n) % n;
+    if (wrapped !== i) {
       this.transitionsEnabled.set(false);
-      this.trackIndex.set(CLONE_COUNT + (i - CLONE_COUNT - n));
-    } else if (i < CLONE_COUNT) {
-      this.transitionsEnabled.set(false);
-      this.trackIndex.set(CLONE_COUNT + (i - CLONE_COUNT + n));
+      this.trackIndex.set(wrapped);
     }
   }
+
+  private readonly visibilityListener = () => {
+    if (document.hidden) {
+      this.clearAutoAdvance();
+    } else {
+      this.normalizeTrackIndex();
+      this.restartAutoAdvance();
+    }
+  };
 
   onMouseEnter(): void {
     this.isPaused.set(true);
