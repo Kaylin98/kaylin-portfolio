@@ -109,7 +109,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   readonly peekRatio = computed(() => (this.visibleCount() === 1 ? 0 : PEEK_RATIO));
   readonly cardWidthPercent = computed(() => 100 / (this.visibleCount() + this.peekRatio() * 2));
-  readonly trackTransform = computed(() => `translateX(-${this.trackIndex() * this.cardWidthPercent()}%)`);
+  readonly trackTransform = computed(() => `translateX(-${(this.trackIndex() - this.peekRatio()) * this.cardWidthPercent()}%)`);
 
   readonly realIndex = computed(() => {
     const n = this.projects.length;
