@@ -7,59 +7,113 @@
       </p>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-8">
-      @for (project of projects; track project.title; let i = $index) {
+    <div
+      class="relative"
+      (mouseenter)="onMouseEnter()"
+      (mouseleave)="onMouseLeave()"
+      (focusin)="onFocusIn()"
+      (focusout)="onFocusOut()"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured projects"
+    >
+      <button
+        type="button"
+        (click)="prev()"
+        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 h-11 w-11 rounded-full bg-background border border-border shadow-md flex items-center justify-center hover:bg-accent transition-colors"
+        aria-label="Previous project"
+      >
+        <svg lucideChevronLeft class="h-5 w-5"></svg>
+      </button>
+
+      <button
+        type="button"
+        (click)="next()"
+        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 h-11 w-11 rounded-full bg-background border border-border shadow-md flex items-center justify-center hover:bg-accent transition-colors"
+        aria-label="Next project"
+      >
+        <svg lucideChevronRight class="h-5 w-5"></svg>
+      </button>
+
+      <div class="overflow-hidden">
         <div
-          appCard
-          class="overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(200,247,62,0.25)]"
-          (mouseenter)="onCardEnter(i)"
-          (mouseleave)="onCardLeave()"
+          class="flex"
+          [style.transform]="trackTransform()"
+          [style.transition]="transitionsEnabled() ? 'transform 500ms ease-in-out' : 'none'"
+          (transitionend)="onTrackTransitionEnd()"
         >
-          <div class="relative overflow-hidden">
-            @if (hoveredIndex() === i && project.videoSrc) {
-              <video
-                [src]="project.videoSrc"
-                autoplay
-                muted
-                loop
-                playsinline
-                class="w-full h-48 object-cover"
-              ></video>
-            } @else {
-              <app-image-with-fallback
-                [src]="project.image"
-                [alt]="project.title"
-                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            }
-            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-          </div>
+          @for (item of extendedItems(); track item.key) {
+            <div class="shrink-0 px-3" [style.width.%]="cardWidthPercent()">
+              <div
+                appCard
+                class="overflow-hidden group h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(200,247,62,0.25)]"
+                (mouseenter)="onCardEnter(item.key)"
+                (mouseleave)="onCardLeave()"
+              >
+                <div class="relative overflow-hidden h-48">
+                  @if (hoveredKey() === item.key && item.project.videoSrc) {
+                    <video
+                      [src]="item.project.videoSrc"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      class="w-full h-48 object-cover"
+                    ></video>
+                  } @else {
+                    <app-image-with-fallback
+                      [src]="item.project.image"
+                      [alt]="item.project.title"
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  }
+                  <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                </div>
 
-          <div appCardHeader>
-            <h3 appCardTitle>{{ project.title }}</h3>
-            <p appCardDescription>{{ project.description }}</p>
-          </div>
+                <div appCardHeader>
+                  <h3 appCardTitle>{{ item.project.title }}</h3>
+                  <p appCardDescription>{{ item.project.description }}</p>
+                </div>
 
-          <div appCardContent class="pt-0">
-            <div class="flex flex-wrap gap-2 mb-4">
-              @for (tech of project.technologies; track tech) {
-                <span appBadge variant="outline" class="text-xs">{{ tech }}</span>
-              }
+                <div appCardContent class="pt-0">
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    @for (tech of item.project.technologies; track tech) {
+                      <span appBadge variant="outline" class="text-xs">{{ tech }}</span>
+                    }
+                  </div>
+
+                  <div class="flex gap-2">
+                    <a appButton size="sm" variant="outline" [href]="item.project.githubUrl" target="_blank" rel="noopener noreferrer">
+                      <app-github-icon class="h-4 w-4 mr-2" />
+                      Code
+                    </a>
+                    <a appButton size="sm" [href]="item.project.liveUrl" target="_blank" rel="noopener noreferrer">
+                      <svg lucideExternalLink class="h-4 w-4 mr-2"></svg>
+                      Live Demo
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div class="flex gap-2">
-              <a appButton size="sm" variant="outline" [href]="project.githubUrl" target="_blank" rel="noopener noreferrer">
-                <app-github-icon class="h-4 w-4 mr-2" />
-                Code
-              </a>
-              <a appButton size="sm" [href]="project.liveUrl" target="_blank" rel="noopener noreferrer">
-                <svg lucideExternalLink class="h-4 w-4 mr-2"></svg>
-                Live Demo
-              </a>
-            </div>
-          </div>
+          }
         </div>
-      }
+      </div>
+
+      <div class="flex items-center justify-center gap-2 mt-8">
+        @for (project of projects; track project.title; let i = $index) {
+          <button
+            type="button"
+            (click)="goTo(i)"
+            class="h-2.5 rounded-full transition-all duration-300"
+            [class.w-2.5]="realIndex() !== i"
+            [class.w-8]="realIndex() === i"
+            [class.bg-primary]="realIndex() === i"
+            [class.bg-muted-foreground/30]="realIndex() !== i"
+            [attr.aria-label]="'Go to ' + project.title"
+            [attr.aria-current]="realIndex() === i ? 'true' : null"
+          ></button>
+        }
+      </div>
     </div>
   </div>
 </section>

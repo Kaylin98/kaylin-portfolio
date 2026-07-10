@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { LucideExternalLink } from '@lucide/angular';
+import { Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
+import { LucideChevronLeft, LucideChevronRight, LucideExternalLink } from '@lucide/angular';
 import { CARD_DIRECTIVES } from '../../ui/card.directive';
 import { ButtonDirective } from '../../ui/button.directive';
 import { BadgeDirective } from '../../ui/badge.directive';
@@ -16,23 +16,31 @@ interface Project {
   liveUrl: string;
 }
 
+interface CarouselItem {
+  key: string;
+  project: Project;
+}
+
+const CLONE_COUNT = 3;
+const PEEK_RATIO = 0.22;
+const AUTO_ADVANCE_MS = 7000;
+
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [LucideExternalLink, GithubIconComponent, ...CARD_DIRECTIVES, ButtonDirective, BadgeDirective, ImageWithFallbackComponent],
+  imports: [
+    LucideChevronLeft,
+    LucideChevronRight,
+    LucideExternalLink,
+    GithubIconComponent,
+    ...CARD_DIRECTIVES,
+    ButtonDirective,
+    BadgeDirective,
+    ImageWithFallbackComponent,
+  ],
   templateUrl: './projects.component.html',
 })
-export class ProjectsComponent {
-  readonly hoveredIndex = signal<number | null>(null);
-
-  onCardEnter(index: number): void {
-    this.hoveredIndex.set(index);
-  }
-
-  onCardLeave(): void {
-    this.hoveredIndex.set(null);
-  }
-
+export class ProjectsComponent implements OnInit, OnDestroy {
   readonly projects: Project[] = [
     {
       title: 'Thrust Issues',
@@ -75,4 +83,121 @@ export class ProjectsComponent {
       liveUrl: 'https://play.unity.com/en/games/9a39a9dd-f90b-4059-97d1-81a2ccdcaba3/dhoom',
     },
   ];
+
+  // --- carousel state ---
+  readonly visibleCount = signal(3);
+  readonly trackIndex = signal(CLONE_COUNT);
+  readonly isPaused = signal(false);
+  readonly transitionsEnabled = signal(true);
+  readonly prefersReducedMotion = signal(false);
+
+  // --- video hover-preview state (keyed by a unique per-slot id, so clones and real cards behave independently) ---
+  readonly hoveredKey = signal<string | null>(null);
+
+  private autoAdvanceTimer: ReturnType<typeof setInterval> | null = null;
+  private readonly resizeListener = () => this.updateVisibleCount();
+  private readonly motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  private readonly motionListener = () => this.prefersReducedMotion.set(this.motionQuery.matches);
+
+  readonly extendedItems = computed<CarouselItem[]>(() => {
+    const items = this.projects;
+    const head = items.slice(-CLONE_COUNT).map((p, i) => ({ key: `head-${i}-${p.title}`, project: p }));
+    const real = items.map((p) => ({ key: p.title, project: p }));
+    const tail = items.slice(0, CLONE_COUNT).map((p, i) => ({ key: `tail-${i}-${p.title}`, project: p }));
+    return [...head, ...real, ...tail];
+  });
+
+  readonly peekRatio = computed(() => (this.visibleCount() === 1 ? 0 : PEEK_RATIO));
+  readonly cardWidthPercent = computed(() => 100 / (this.visibleCount() + this.peekRatio() * 2));
+  readonly trackTransform = computed(() => `translateX(-${this.trackIndex() * this.cardWidthPercent()}%)`);
+
+  readonly realIndex = computed(() => {
+    const n = this.projects.length;
+    return (((this.trackIndex() - CLONE_COUNT) % n) + n) % n;
+  });
+
+  ngOnInit(): void {
+    this.updateVisibleCount();
+    window.addEventListener('resize', this.resizeListener);
+    this.motionQuery.addEventListener('change', this.motionListener);
+    this.prefersReducedMotion.set(this.motionQuery.matches);
+    this.restartAutoAdvance();
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('resize', this.resizeListener);
+    this.motionQuery.removeEventListener('change', this.motionListener);
+    this.clearAutoAdvance();
+  }
+
+  private updateVisibleCount(): void {
+    const w = window.innerWidth;
+    this.visibleCount.set(w >= 1024 ? 3 : w >= 640 ? 2 : 1);
+  }
+
+  private clearAutoAdvance(): void {
+    if (this.autoAdvanceTimer !== null) {
+      clearInterval(this.autoAdvanceTimer);
+      this.autoAdvanceTimer = null;
+    }
+  }
+
+  private restartAutoAdvance(): void {
+    this.clearAutoAdvance();
+    if (this.prefersReducedMotion()) return;
+    this.autoAdvanceTimer = setInterval(() => {
+      if (!this.isPaused()) this.next();
+    }, AUTO_ADVANCE_MS);
+  }
+
+  next(): void {
+    this.transitionsEnabled.set(true);
+    this.trackIndex.update((i) => i + 1);
+  }
+
+  prev(): void {
+    this.transitionsEnabled.set(true);
+    this.trackIndex.update((i) => i - 1);
+  }
+
+  goTo(index: number): void {
+    this.transitionsEnabled.set(true);
+    this.trackIndex.set(CLONE_COUNT + index);
+  }
+
+  onTrackTransitionEnd(): void {
+    const n = this.projects.length;
+    const i = this.trackIndex();
+    if (i >= CLONE_COUNT + n) {
+      this.transitionsEnabled.set(false);
+      this.trackIndex.set(CLONE_COUNT + (i - CLONE_COUNT - n));
+    } else if (i < CLONE_COUNT) {
+      this.transitionsEnabled.set(false);
+      this.trackIndex.set(CLONE_COUNT + (i - CLONE_COUNT + n));
+    }
+  }
+
+  onMouseEnter(): void {
+    this.isPaused.set(true);
+  }
+
+  onMouseLeave(): void {
+    this.isPaused.set(false);
+  }
+
+  onFocusIn(): void {
+    this.isPaused.set(true);
+  }
+
+  onFocusOut(): void {
+    this.isPaused.set(false);
+  }
+
+  onCardEnter(key: string): void {
+    this.hoveredKey.set(key);
+  }
+
+  onCardLeave(): void {
+    this.hoveredKey.set(null);
+  }
 }
