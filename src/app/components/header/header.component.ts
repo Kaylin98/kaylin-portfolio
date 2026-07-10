@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
-import { LucideMenu } from '@lucide/angular';
+import { LucideDownload, LucideMenu } from '@lucide/angular';
 import { ButtonDirective } from '../../ui/button.directive';
 import { SiteConfigService } from '../../site-config';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [LucideMenu, ButtonDirective],
+  imports: [LucideMenu, ButtonDirective,LucideDownload],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {

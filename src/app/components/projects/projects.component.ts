@@ -24,7 +24,7 @@ interface CarouselItem {
 
 const CLONE_COUNT = 3;
 const PEEK_RATIO = 0.22;
-const AUTO_ADVANCE_MS = 7000;
+const AUTO_ADVANCE_MS = 4500;
 
 @Component({
   selector: 'app-projects',

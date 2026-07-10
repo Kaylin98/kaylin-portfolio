@@ -17,6 +17,10 @@
         <button (click)="scrollToSection('experience')" class="hover:text-primary transition-colors">
           Experience
         </button>
+        <a appButton variant="outline" size="sm" href="resume.pdf" download="Kaylin-Maharaj-Resume.pdf">
+          <svg lucideDownload class="h-4 w-4 mr-2"></svg>
+          Resume
+        </a>
         <button appButton size="sm" (click)="scrollToSection('contact')">Contact</button>
       </nav>
 
@@ -42,6 +46,10 @@
           <button (click)="scrollToSection('experience')" class="text-left hover:text-primary transition-colors">
             Experience
           </button>
+          <a appButton variant="outline" size="sm" class="w-fit" href="resume.pdf" download="Kaylin-Maharaj-Resume.pdf">
+            <svg lucideDownload class="h-4 w-4 mr-2"></svg>
+            Resume
+          </a>
           <button appButton size="sm" class="w-fit" (click)="scrollToSection('contact')">Contact</button>
         </div>
       </nav>
