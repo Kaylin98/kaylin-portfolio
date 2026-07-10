@@ -17,7 +17,7 @@ export class SkillsComponent {
   readonly skillCategories: SkillCategory[] = [
     {
       category: 'Backend',
-      skills: ['C#', '.NET', 'ASP.NET Core (MVC)', 'Web APIs', 'Microservices', 'RESTful APIs'],
+      skills: ['C#', '.NET', 'ASP.NET Core (MVC)', 'Web APIs',  'RESTful APIs'],
     },
     {
       category: 'Frontend & Mobile',

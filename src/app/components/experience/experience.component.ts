@@ -27,7 +27,7 @@ export class ExperienceComponent {
       period: '06/2024 - Present',
       description:
         "Engineered core modules for Toyota's e-ToyotaONE Dealership Management System. Handled end-to-end feature delivery, writing robust .NET APIs to process complex dealership data and wiring them into high-performance Angular interfaces. Focused on building architecture that scales and UIs that dealership staff can actually navigate without friction.",
-      technologies: ['C#', '.NET', 'Microservices', 'SQL', 'HTML Templating'],
+      technologies: ['C#', '.NET',  'SQL', 'Angular', 'RESTful APIs', 'Agile Development'],
     },
     {
       title: 'Full Stack Software Engineer',
@@ -44,8 +44,8 @@ export class ExperienceComponent {
       location: 'Durban',
       period: '03/2021 - 04/2022',
       description:
-        'Developed a truck booking system across web and Android for a logistics platform spanning point of origin to destination. Built RESTful APIs bridging legacy and modern systems, and developed microservices for a Warehouse Management System.',
-      technologies: ['Angular', 'C#', 'RESTful APIs', 'Android', 'Microservices'],
+        'Developed a truck booking system across web and Android for a logistics platform spanning point of origin to destination. Built RESTful APIs bridging legacy and modern systems, and developed services for a Warehouse Management System.',
+      technologies: ['Angular', 'C#', 'RESTful APIs'],
     },
     {
       title: 'Developer (Graduate)',
@@ -53,8 +53,8 @@ export class ExperienceComponent {
       location: 'Durban',
       period: '02/2020 - 02/2021',
       description:
-        'Built a business process management (leave) system for the graduate program, developed microservices for a Warehouse Management System, and tested systems for the Qatar Foundation and SANParks (South African National Parks).',
-      technologies: ['C#', 'Microservices', 'System Testing'],
+        'Created a Business Process Management system (Leave System) for the Graduate program. Tested the Qatar Foundation app system and the SANParks (South African National Parks) supply chain management system.',
+      technologies: ['C#', 'Business Process Management', 'System Testing'],
     },
     {
       title: 'Software Developer (Intern)',

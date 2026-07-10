@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
-import { LucideChevronLeft, LucideChevronRight, LucideExternalLink } from '@lucide/angular';
+import { LucideChevronLeft, LucideChevronRight, LucideExternalLink, LucideSmartphone } from '@lucide/angular';
 import { CARD_DIRECTIVES } from '../../ui/card.directive';
 import { ButtonDirective } from '../../ui/button.directive';
 import { BadgeDirective } from '../../ui/badge.directive';
@@ -11,6 +11,7 @@ interface Project {
   description: string;
   image: string;
   videoSrc?: string;
+  androidUrl?: string;
   technologies: string[];
   githubUrl: string;
   liveUrl: string;
@@ -32,6 +33,7 @@ const AUTO_ADVANCE_MS = 7000;
     LucideChevronLeft,
     LucideChevronRight,
     LucideExternalLink,
+    LucideSmartphone,
     GithubIconComponent,
     ...CARD_DIRECTIVES,
     ButtonDirective,
@@ -58,6 +60,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         'A physics-based endless runner where every drink collected raises your speed and every checkpoint buys you more time. Built around dynamic velocity stacking, a coroutine-driven coin-magnet power-up, and a centralized game manager syncing the countdown under pressure.',
       image: 'images/hold_my_beer.png',
       videoSrc: 'videos/hold-my-beer.mp4',
+      androidUrl: 'https://github.com/Kaylin98/hold-my-beer/releases/tag/v1.0.0',
       technologies: ['Unity 6', 'C#', 'Mobile', 'Game Systems Design'],
       githubUrl: 'https://github.com/Kaylin98/hold-my-beer',
       liveUrl: 'https://play.unity.com/en/games/e0ec2768-7935-4498-9475-97fdc4f21fc3/hold-my-beer',

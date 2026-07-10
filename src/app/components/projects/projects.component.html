@@ -92,6 +92,12 @@
                       Live Demo
                     </a>
                   </div>
+                  @if (item.project.androidUrl) {
+                  <a [href]="item.project.androidUrl" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors mt-3">
+                    <svg lucideSmartphone class="h-3.5 w-3.5"></svg>
+                    Also available on Android
+                  </a>
+                  }
                 </div>
               </div>
             </div>
