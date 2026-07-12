@@ -45,6 +45,16 @@ const AUTO_ADVANCE_MS = 4500;
 export class ProjectsComponent implements OnInit, OnDestroy {
   readonly projects: Project[] = [
     {
+      title: 'Company Research AI',
+      description:
+        'An AI-powered research assistant that scrapes a company\'s website and generates a structured interview-prep summary - what they do, tech stack, recent news, and culture. Built with a headless-browser scraper for JS-rendered sites, a two-stage LLM pipeline for link filtering and synthesis, and a cached Streamlit UI to keep repeat lookups instant.',
+      image: 'images/ai-company-researcher.png',
+      videoSrc: 'videos/ai-company-researcher.mp4',
+      technologies: ['Python', 'Playwright', 'LLM Agents', 'Streamlit'],
+      githubUrl: 'https://github.com/Kaylin98/company-research-ai',
+      liveUrl: 'https://company-research-ai-srjjkuerrxhruxe5woaw56.streamlit.app/',
+    },
+    {
       title: 'Thrust Issues',
       description:
         'A physics-based rocket flyer across three hazardous worlds - thrust with Space, rotate with the arrow keys, and fight momentum as much as gravity. Built with hybrid Rigidbody physics, a finite-state collision system, and procedural UI that adapts its style per level.',
